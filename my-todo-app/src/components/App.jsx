@@ -1,4 +1,5 @@
 import { Component } from "react";
+import { createPortal } from "react-dom"
 import { GlobalStyle } from "../Global.styled";
 import TodoList from "./TodoList/TodoList";
 import initialTodos from './TodoList/todos.json';
@@ -7,6 +8,9 @@ import { Filter } from "./Filter/Filter";
 import { Modal } from "./Modal/Modal";
 import { InfoBox } from "../App.styled";
 import { nanoid } from "nanoid";
+
+const modalRoot = document.querySelector('#modal-root');
+
 class App extends Component {
   
   state={
@@ -64,8 +68,13 @@ class App extends Component {
       0,
     );
   };
-  toggleModal = () => {
-    this.setState((prev) => ({isOpen: !prev.isOpen}))
+  closeModal = () => {
+    this.setState({isOpen: false})
+    console.log("onClose func")
+  }
+  openModal = () => {
+    this.setState({isOpen: true})
+    console.log("onOpen func")
   }
   render(){
     const { todos, filter } = this.state;
@@ -88,9 +97,9 @@ class App extends Component {
           onToggleCompleted={this.toggleCompleted}
         />
       */}
-        <button type="button" onClick={this.toggleModal}>Open Modal</button> 
+        <button type="button" onClick={this.openModal}>Open Modal</button> 
+       {this.state.isOpen && <Modal onClose={this.closeModal}></Modal>}
        {/* {this.state.isOpen && <Modal onClose={this.toggleModal}></Modal>} */}
-       {this.state.isOpen && <Modal onClose={this.toggleModal}></Modal>}
        
       <GlobalStyle/>
       </>
